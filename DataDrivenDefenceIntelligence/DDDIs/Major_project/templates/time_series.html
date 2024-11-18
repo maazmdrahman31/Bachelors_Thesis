@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bar Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="../static/time_series.css" />
+    <style>
+      /* CSS styles for the navigation bar */
+      
+      .navbar {
+          background-color: #2f4f4f;
+          overflow: hidden;
+      }
+      
+      .navbar a {
+          float: left;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+          font-size: 17px;
+          border-radius: 5px;
+          border: 2px solid #fff;
+      }
+      
+      .navbar a:hover {
+          background-color: #ddd;
+          color: black;
+      }
+  </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="{{url_for('home')}}">Back to Home</a>
+  </div>
+    <h1>Annual Military Investment Forecast</h1>
+    <div class="select-container">
+      <div class="select">
+        <select id="Country" onchange="updateGraph()">
+          <option value="India">India</option>
+          <option value="United States of America">USA</option>
+          <option value="Germany">Germany</option>
+          <option value="Pakistan">Pakistan</option>
+          <option value="Turkey">Turkey</option>
+          <option value="Australia">Australia</option>
+          <option value="New Zealand">New Zealand</option>
+          <option value="United Kingdom">United Kingdom</option>
+          <option value="Japan">Japan</option>
+          <option value="Brazil">Brazil</option>
+          <option value="South Africa">South Africa</option>
+          <!-- <option value="Pakistan">Pakistan</option> -->
+        </select>
+      </div>
+    </div>
+    <div class="container">
+      <div class="card">
+        <h1 class="firstH1"></h1>
+        <div class="first slide">
+          <div id="graph" class="graph-container"></div>
+          <button class="btn gen-report-btn" onclick="genReport()">
+            Generate Report
+          </button>
+          <p id="report"></p>
+        </div>
+      </div>
+      <div class="step-2 invisible">
+        <button class="btn decompose" onclick="decompose()">Decompose</button>
+        <div class="card" style="width: 100%">
+          <h1 class="secondH1"></h1>
+          <div id="secondSlide" class="second slide">
+            <div id="trendJSON" class="graph-container"></div>
+            <button
+              class="btn gen-decompose-report-btn"
+              onclick="genDecomposeReport()"
+            >
+              Generate Decompose Report
+            </button>
+            <p id="Decomposereport"></p>
+          </div>
+        </div>
+        <div class="step-4 invisible">
+          <button class="btn stationary" onclick="stationary()">
+            Stationary
+          </button>
+          <div class="card" style="width: 100%">
+            <h1 class="fourthH1"></h1>
+            <div id="fourthSlide" class="fourth slide">
+              <div
+                id="stationary_graph"
+                class="graph-container"
+                style="width: 700px; height: 400px"
+              ></div>
+              <p id="stationary_report"></p>
+            </div>
+          </div>
+        </div>
+        <div class="step-3 invisible">
+          <div class="forecast-data">
+            <div>
+              <label for="forecast_years">Forecast Years:</label>
+              <input
+                class="input"
+                type="number"
+                id="forecast_years"
+                name="forecast_years"
+              />
+            </div>
+            <div>
+              <label for="percentage">Train Percentage:</label>
+              <input
+                class="input"
+                type="number"
+                id="percentage"
+                name="percentage"
+                placeholder="0.8 to 0.95"
+              />
+            </div>
+            <div class="select-container">
+              <label for="model">Select Model:</label>
+              <div class="select">
+                <select id="model">
+                  <option value="ARIMA">ARIMA</option>
+                  <option value="Simple_Exponential">Simple Exponential</option>
+                  <option value="Double_Exponential">Double Exponential</option>
+                  <option value="Triple_Exponential">Triple Exponential</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn" style="margin: 0 10px" onclick="predictarima()">
+              Forecast Investment
+            </button>
+          </div>
+          <div class="card" style="width: 100%">
+            <h1 class="thirdH1"></h1>
+            <div id="thirdSlide" class="third slide">
+              <div id="arimagraph" class="graph-container"></div>
+              <p id="prediction_report"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        updateGraph();
+      });
+
+      function genReport() {
+        var button = document.querySelector(".gen-report-btn");
+        button.classList.remove("btn");
+        button.classList.add("invisible");
+        var element = document.getElementById("report");
+        fetchReport(element);
+        var step2 = document.querySelector(".step-2");
+        step2.classList.remove("invisible");
+      }
+
+      function fetchReport(element) {
+        var country = document.getElementById("Country").value;
+        fetch(`/time_series?country=${country}`)
+          .then((response) => response.json())
+          .then((data) => {
+            element.classList.remove("invisible");
+            typeEffect(element, data.report);
+          });
+      }
+
+      function updateGraph() {
+        var country = document.getElementById("Country").value;
+        fetch(`/time_series?country=${country}`)
+          .then((response) => response.json())
+          .then((data) => {
+            var graphs = JSON.parse(data.graphJSON);
+            Plotly.newPlot("graph", graphs, {});
+            var line = `${country}'s Defense Investment`;
+            updateHeading("firstH1", line);
+          });
+      }
+
+      function decompose() {
+        var country = document.getElementById("Country").value;
+        fetch(`/decompose?country=${country}`)
+          .then((response) => response.json())
+          .then((data) => {
+            var graphs = JSON.parse(data.trendJSON);
+            Plotly.newPlot("trendJSON", graphs, {});
+            document.getElementById("secondSlide").style.display = "flex";
+            var button = document.querySelector(".decompose");
+            button.classList.remove("btn");
+            button.classList.add("invisible");
+            var line = `Decomposed series of Defense of ${country}'s Investment`;
+            updateHeading("secondH1", line);
+          });
+      }
+
+      function genDecomposeReport() {
+        var button = document.querySelector(".gen-decompose-report-btn");
+        button.classList.remove("btn");
+        button.classList.add("invisible");
+        var element = document.getElementById("Decomposereport");
+        fetchDecomposeReport(element);
+        var step4 = document.querySelector(".step-4");
+        step4.classList.remove("invisible");
+      }
+
+      function fetchDecomposeReport(element) {
+        var country = document.getElementById("Country").value;
+        fetch(`/decompose?country=${country}`)
+          .then((response) => response.json())
+          .then((data) => {
+            element.classList.remove("invisible");
+            typeEffect(element, data.report);
+          });
+      }
+
+      function predictarima() {
+        var country = document.getElementById("Country").value;
+        var model = document.getElementById("model").value;
+        var forecast_years = document.getElementById("forecast_years").value;
+        var percentage = document.getElementById("percentage").value;
+        fetch(
+          `/predict?country=${country}&forecast_years=${forecast_years}&percentage=${percentage}&model=${model}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            var graphs = JSON.parse(data.arimagraph);
+            Plotly.newPlot("arimagraph", graphs, {});
+            typeEffect(
+              document.getElementById("prediction_report"),
+              data.report
+            );
+            document.getElementById("thirdSlide").style.display = "flex";
+            var line = `Forecasting Defense Investment for next ${forecast_years} years in ${country}`;
+            updateHeading("thirdH1", line);
+          });
+      }
+      function stationary() {
+        var country = document.getElementById("Country").value;
+        fetch(`/stationary?country=${country}`)
+          .then((response) => response.json())
+          .then((data) => {
+            var graphs = JSON.parse(data.stationarygraph);
+            Plotly.newPlot("stationary_graph", graphs, {});
+            typeEffect(
+              document.getElementById("stationary_report"),
+              data.report
+            );
+            document.getElementById("fourthSlide").style.display = "flex";
+            var button = document.querySelector(".stationary");
+            button.classList.remove("btn");
+            button.classList.add("invisible");
+            var line = `Converting Original Series into Stationary Series of ${country}'s Investment`;
+            updateHeading("fourthH1", line);
+            var step3 = document.querySelector(".step-3");
+            step3.classList.remove("invisible");
+          });
+      }
+
+      function typeEffect(element, text) {
+        const speed = 2; // typing speed in ms
+        let index = 0;
+
+        function type() {
+          if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, speed);
+          }
+        }
+
+        element.textContent = ""; // Clearing the content
+        type();
+      }
+
+      function updateHeading(class_name, line) {
+        const heading = document.querySelector(`.${class_name}`);
+        heading.textContent = line;
+      }
+    </script>
+  </body>
+</html>

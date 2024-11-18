@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CodePen - Pure CSS clickable flip cards</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    />
+    <link rel="stylesheet" href="../static/OS_style.css" />
+  </head>
+  <body>
+    <!-- partial:index.partial.html -->
+    <div class="wrapper">
+      <div class="card">
+        <input type="checkbox" id="card1" class="more" aria-hidden="true" />
+        <div class="content">
+          <div
+            class="front"
+            style="
+              background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210913/pngtree-ui-dashboard-statistics-for-desktop-image_880885.jpg');
+            "
+          >
+            <div class="inner">
+              <h2>Military Dashboard</h2>
+
+              <label for="card1" class="button" aria-hidden="true">
+                Details
+              </label>
+            </div>
+          </div>
+          <div class="back">
+            <div class="inner">
+              <div class="description">
+                <p>
+                  Our endeavor involves in-depth analysis and visualization of
+                  military data to unveil trends critical for strategic
+                  decision-making. Feel free to click the button below to
+                  explore our comprehensive dashboard, providing valuable
+                  insights for informed planning and execution.
+                </p>
+                <div class="col-md-4 col-sm-4 margin-bottom-40 ml-4">
+                  <a
+                    href="/dashboard" target="_blank"
+                    class="btn btn-mod btn-border btn-circle btn-large"
+                  >
+                    View Dashboard
+                  </a>
+                </div>
+              </div>
+
+              <label for="card1" class="button return" aria-hidden="true">
+                <i class="fas fa-arrow-left"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <input type="checkbox" id="card2" class="more" />
+        <div class="content">
+          <div
+            class="front"
+            style="
+              background-image: url('https://t3.ftcdn.net/jpg/05/70/41/22/360_F_570412230_jeX2ERaqXubWVsVGlK1LNi2Nu9JUsvSh.jpg');
+            "
+          >
+            <div class="inner">
+              <h3>Time Series Forecasting</h3>
+              <label for="card2" class="button" aria-hidden="true">
+                Details
+              </label>
+            </div>
+          </div>
+          <div class="back">
+            <div class="inner">
+              <div class="description">
+                <p>
+                  At our project, we're dedicated to harnessing the power of
+                  time series forecasting to anticipate future trends with
+                  precision. Our advanced algorithms analyze historical data to
+                  provide insightful predictions. Click the button below to
+                  explore our forecasting dashboard.
+                </p>
+                <div class="col-md-4 col-sm-4 margin-bottom-40 ml-4">
+                  <a
+                    href="{{url_for('forecasting')}}" target="_blank"
+                    class="btn btn-mod btn-border btn-circle btn-large"
+                  >
+                    TimeSeries Dashboard
+                  </a>
+                </div>
+              </div>
+
+              <label for="card2" class="button return" aria-hidden="true">
+                <i class="fas fa-arrow-left"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wrapper">
+      <div class="card">
+        <input type="checkbox" id="card4" class="more" />
+        <div class="content">
+          <div
+            class="front"
+            style="
+              background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20220313/pngtree-business-financial-report-data-analysis-table-image_1059516.jpg');
+            "
+          >
+            <div class="inner">
+              <h2>Report Generation</h2>
+              <label for="card4" class="button" aria-hidden="true">
+                Details
+              </label>
+            </div>
+          </div>
+          <div class="back">
+            <div class="inner">
+              <div class="description">
+                <p>
+                  We specialize in crafting detailed reports for time series
+                  data, offering clear insights into trends and patterns. Access
+                  our report generation tool below to uncover valuable insights
+                  for strategic planning.
+                </p>
+                <br />
+                <div class="col-md-4 col-sm-4 margin-bottom-40 ml-4">
+                  <a
+                    href="{{url_for('forecasting')}}"
+                    class="btn btn-mod btn-border btn-circle btn-large"
+                  >
+                    Report Generation
+                  </a>
+                </div>
+              </div>
+
+              <label for="card4" class="button return" aria-hidden="true">
+                <i class="fas fa-arrow-left"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- partial -->
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bar Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+      }
+
+      #bar_chart {
+        width: 60%;
+        max-width: 600px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 0;
+      }
+
+      h1 {
+        text-align: left;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Annual Military Investment Forecast</h1>
+    <div id="bar_chart"></div>
+    <script>
+      var graphJSON = JSON.parse("{{ graphJSON | escapejs }}");
+      Plotly.newPlot("bar_chart", graphJSON);
+    </script>
+  </body>
+</html>

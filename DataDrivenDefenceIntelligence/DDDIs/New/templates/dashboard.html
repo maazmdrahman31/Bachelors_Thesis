@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        /* CSS styles for the navigation bar */
+        body {
+            margin: 0;
+            width: 100%;
+        }
+        .navbar {
+            background-color: #202124;
+            overflow: hidden;
+        }
+        
+        .navbar a {
+            float: left;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            border-radius: 5px;
+            border: 2px solid #fff;
+        }
+        
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{url_for('home')}}">Back to Home</a>
+    </div>
+    
+    <!-- Your dashboard content goes here -->
+    <iframe width="100%" height="3200px" src="https://lookerstudio.google.com/embed/reporting/53f2a611-07d4-4350-966f-bcc0c7de9103/page/ksc1D" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+</body>
+</html>
